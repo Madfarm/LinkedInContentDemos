@@ -1,6 +1,8 @@
-﻿namespace AuthAPI.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace AuthAPI.Models
 {
-    public class ApplicationUser
+    public class ApplicationUser : IdentityUser
     {
         public string Name { get; set; }
     }
