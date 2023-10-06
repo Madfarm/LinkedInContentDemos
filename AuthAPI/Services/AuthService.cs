@@ -22,9 +22,42 @@ namespace AuthAPI.Services
             throw new NotImplementedException();
         }
 
-        public Task<string> Register(RegistrationRequestDto registrationRequestDto)
+        public async Task<string> Register(RegistrationRequestDto registrationRequestDto)
         {
-            throw new NotImplementedException();
+            ApplicationUser userToBeCreated = new()
+            {
+                Email = registrationRequestDto.Email,
+                UserName = registrationRequestDto.Username,
+                Name = registrationRequestDto.Name
+
+            };
+
+            try
+            {
+                var result = await _userManager.CreateAsync(userToBeCreated);
+
+                if (result.Succeeded)
+                {
+                    // In case, we need this later
+                    var user = _db.ApplicationUsers.First(u => u.UserName == registrationRequestDto.Email);
+
+                    return "";
+                }
+                else
+                {
+                    return result.Errors.FirstOrDefault().Description;
+                }
+                
+
+                
+
+            }
+            catch (Exception e)
+            {
+                
+            }
+
+            return "Error Encountered"
         }
     }
 }
