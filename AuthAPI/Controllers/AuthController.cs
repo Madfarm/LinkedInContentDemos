@@ -20,9 +20,18 @@ namespace AuthAPI.Controllers
 
 
         [HttpPost("register")]
-        public async IActionResult Register([FromBody] RegistrationRequestDto request)
+        public async Task<IActionResult> Register([FromBody] RegistrationRequestDto request)
         {
-            return NoContent(); 
+            var errorMessage = await _authService.Register(request);
+
+            if (!string.IsNullOrEmpty(errorMessage)) 
+            {
+                _response.IsSuccessful = false;
+                _response.Message = errorMessage;
+                return BadRequest(_response);
+            }
+
+            return Ok(_response);
         }
     }
 }
