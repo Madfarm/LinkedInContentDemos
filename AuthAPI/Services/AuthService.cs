@@ -57,7 +57,7 @@ namespace AuthAPI.Services
                 
             }
 
-            return "Error Encountered"
+            return "Error Encountered";
         }
     }
 }
