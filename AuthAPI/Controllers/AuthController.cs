@@ -33,5 +33,20 @@ namespace AuthAPI.Controllers
 
             return Ok(_response);
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
+        {
+            var loginResponse = await _authService.Login(request);
+
+            if (loginResponse.User == null)
+            {
+                _response.IsSuccessful = false;
+                _response.Message = "Username or password is incorrect";
+                return BadRequest(_response);
+            }
+
+            return Ok(_response);
+        }
     }
 }
