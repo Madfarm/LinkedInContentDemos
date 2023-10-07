@@ -31,6 +31,8 @@ namespace AuthAPI.Services
                 return new LoginResponseDto { User = null, Token = "" };
             }
 
+            var token = _jwtTokenGenerator.GenerateToken(user);
+
             UserDto userDto = new()
             {
                 Id = user.Id,
@@ -41,7 +43,7 @@ namespace AuthAPI.Services
             LoginResponseDto loginResponse = new()
             {
                 User = userDto,
-                Token = ""
+                Token = token
             };
 
             return loginResponse;
