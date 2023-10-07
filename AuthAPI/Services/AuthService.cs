@@ -56,7 +56,7 @@ namespace AuthAPI.Services
             ApplicationUser userToBeCreated = new()
             {
                 Email = registrationRequestDto.Email,
-                UserName = registrationRequestDto.Username,
+                UserName = registrationRequestDto.Email,
                 Name = registrationRequestDto.Name
 
             };
