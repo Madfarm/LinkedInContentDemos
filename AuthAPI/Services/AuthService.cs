@@ -19,36 +19,32 @@ namespace AuthAPI.Services
         }
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
-            try
+
+            var user = _db.ApplicationUsers.FirstOrDefault(u => u.UserName == loginRequestDto.Username);
+
+            var isValid = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
+
+            if (user == null || isValid == false)
             {
-                var user = _db.ApplicationUsers.First(u => u.Email == loginRequestDto.Username);
-
-                var isValid = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
-
-                if (user == null || isValid == false)
-                {
-                    return new LoginResponseDto { User = null, Token = "" };
-                }
-
-                UserDto userDto = new()
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    Email = user.Email
-                };
-
-                LoginResponseDto loginResponse = new()
-                {
-                    User = userDto,
-                    Token = ""
-                };
-
-                return loginResponse;
+                return new LoginResponseDto { User = null, Token = "" };
             }
-            catch (Exception)
+
+            UserDto userDto = new()
             {
-                throw;
-            }
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email
+            };
+
+            LoginResponseDto loginResponse = new()
+            {
+                User = userDto,
+                Token = ""
+            };
+
+            return loginResponse;
+
+
         }
 
         public async Task<string> Register(RegistrationRequestDto registrationRequestDto)
@@ -63,7 +59,7 @@ namespace AuthAPI.Services
 
             try
             {
-                var result = await _userManager.CreateAsync(userToBeCreated);
+                var result = await _userManager.CreateAsync(userToBeCreated, registrationRequestDto.Password);
 
                 if (result.Succeeded)
                 {
@@ -76,14 +72,14 @@ namespace AuthAPI.Services
                 {
                     return result.Errors.FirstOrDefault().Description;
                 }
-                
 
-                
+
+
 
             }
             catch (Exception e)
             {
-                
+
             }
 
             return "Error Encountered";
