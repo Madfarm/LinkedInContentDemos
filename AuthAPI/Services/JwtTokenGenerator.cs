@@ -1,11 +1,12 @@
 ﻿using AuthAPI.Models;
+using AuthAPI.Services.IServices;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace AuthAPI.Services.IServices
+namespace AuthAPI.Services
 {
     public class JwtTokenGenerator : IJwtTokenGenerator
     {
